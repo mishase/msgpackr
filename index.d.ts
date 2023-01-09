@@ -27,6 +27,7 @@ export interface Options {
 	getStructures?(): {}[]
 	saveStructures?(structures: {}[]): boolean | void
 	onInvalidDate?: () => any
+	transform?: (value: any) => any
 }
 interface Extension {
 	Class: Function

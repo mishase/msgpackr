@@ -47,6 +47,9 @@ export class Packr extends Unpackr {
 		if (options.structuredClone && options.moreTypes == undefined) {
 			options.moreTypes = true
 		}
+		if (typeof options.transform === "function") {
+			this.transform = options.transform
+		}
 		let maxOwnStructures = options.maxOwnStructures
 		if (maxOwnStructures == null)
 			maxOwnStructures = hasSharedStructures ? 32 : 64
@@ -223,10 +226,11 @@ export class Packr extends Unpackr {
 				pack(value[i])
 			}
 		}
-		const pack = (value) => {
+		const pack = (rawValue) => {
 			if (position > safeEnd)
 				target = makeRoom(position)
 
+			var value = this.transform ? this.transform(rawValue) : rawValue
 			var type = typeof value
 			var length
 			if (type === 'string') {
